@@ -11,9 +11,11 @@
     "debug": "~2.6.9",
     "dotenv": "8.2.0",
     "express": "~4.16.1",
+    "http-errors": "~1.6.3",
     "mongo": "^0.1.0",
     "mongoose": "^5.9.25",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
   },
   "devDependencies": {
     "@commitlint/cli": "9.1.1",
