@@ -1,4 +1,48 @@
 extends ../layout.pug
 
 block content
-  pre= model
+  input#room-id(type='hidden', value=model.id)
+  #app.row
+    .col-md-4.pr-2
+      .card.h-100
+        .card-body
+          h2.card-title Participants
+          ul#participant-list.list-group.list-group-flush
+            li.list-group-item(v-for='(val, username) in model.players')
+              .d-flex
+                img(width='32', src='https://api.adorable.io/avatars/32/{{username}}').rounded-circle.mr-3
+                .flex-grow-1 {{ username }}
+                i.text-muted.fa.fa-clock-o(v-if='"" === val')
+                i.text-muted.fa.fa-check(v-else)
+    .col-md-4
+      .card.h-100
+        .card-body
+          .row
+            each card in model.cards
+              .col-4.p-2
+                input.btn.btn-outline-primary.btn-lg.btn-block.py-5(type='button', value=card)
+
+    .col-md-4.pl-2
+      .card.h-100
+        .card-body
+          .border-bottom.text-center.mb-3
+            div
+              i.fa.fa-clock-o.fa-4x
+            p
+              div Your vote: {{ vote }}
+              div Waiting for other participants
+              div.text-muted {{ votes }} of {{ totalPlayers }}
+          .text-center.my-3(v-if='model.finished')
+            .display-4.mb-4 {{ maxResponse }}
+            table.table.table-bordered.table-hover.table-sm
+              tbody
+                tr
+                  td Max
+                  td {{ maxResponse }}
+                tr
+                  td Min
+                  td {{ minResponse }}
+          div.text-right
+            button.btn.btn-primary(v-if='model.finished') New round
+            button.btn.btn-success(v-else) See results
+  script(src='/js/apps/planningPoker.js', defer)

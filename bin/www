@@ -9,6 +9,7 @@ const debug = require('debug')('devtools:server')
 const http = require('http')
 require('dotenv').config()
 const mongoose = require('mongoose')
+const sockets = require('../sockets')
 
 /**
  * Database connection
@@ -33,6 +34,15 @@ app.set('port', port)
  */
 
 const server = http.createServer(app)
+
+/**
+ * Create Socket.io server.
+ */
+global.io = require('socket.io')(server)
+global.io.on('connection', (socket) => {
+  debug('socket.io initialized')
+  sockets(global.io, socket)
+})
 
 /**
  * Listen on provided port, on all network interfaces.

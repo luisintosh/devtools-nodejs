@@ -1,9 +1,9 @@
-var express = require('express')
-var router = express.Router()
+module.exports = (app) => {
+  /* Routes for /planning-poker */
+  app.use('/planning-poker', require('./planningPoker'))
 
-/* GET home page. */
-router.get('/', function (req, res) {
-  res.render('index', { title: 'Express' })
-})
-
-module.exports = router
+  /* GET home page. */
+  app.use('/', (req, res) => {
+    res.render('index')
+  })
+}
