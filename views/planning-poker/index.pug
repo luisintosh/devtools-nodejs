@@ -1,0 +1,41 @@
+extends ../layout.pug
+
+block content
+  .row
+    .col-md-6.offset-md-3
+      .card
+        .card-body
+          if error
+            .alert.alert-warning We had an error processing your request, please follow the instructions.
+          h1.card-title Planning Poker SCRUM
+          p Planning Poker scrum is a virtual card game designed to help agile and scrum development teams effectively set their sprint goals through team planning and consensus-based estimations. Planning Poker scrum is designed to be one an effective sprint planning tool for your agile team.
+          button.btn.btn-primary.btn-block.my-4(data-toggle='modal', data-target='#newRoomModal') New room
+          h2 The Features You Need for Sprint Planning
+          p Are you asking for How to do my planning meetings nicer?. Planning Poker’s new features makes it fun and easy for your team to effectively and accurately set your sprint estimates:
+          ul
+            li Play on mobile or desktop to support distributed teams
+            li Choose from multiple pointing scales to build a sprint that fits your team
+            li Register and play securely to protect your sprint
+            li Build a custom pointing scale
+  #newRoomModal.modal.fade(tabIndex='-1', role='dialog', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        form(action='/planning-poker/new', method='post')
+          .modal-header
+            h5.modal-title Create your room
+            button.close(type='button', data-dismiss='modal', aria-label='close')
+              span(aria-hidden='true') &times;
+          .modal-body
+            .form-group
+              label(for='usernameField') Username
+              input.form-control(type='text', id='usernameField', minlength='3', maxlength='20', placeholder='John Doe', name='username', required)
+              small.form-text.text-muted Please use a username with minimum 3 chars and maximum 20
+            .form-group
+              label(for='cardsField') Card values
+              input.form-control(type='text', id='cardsField', placeholder='0,1,2,3,5,8', name='cards', required)
+              small.form-text.text-muted
+                span Insert a list of values ​​for your cards separated by commas. i.e. 
+                i 0,1,2,3,5,8
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary(type='submit') Create
