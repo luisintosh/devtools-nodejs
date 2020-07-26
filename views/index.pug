@@ -1,4 +1,13 @@
 extends layout
 
+block pageInfo
+  title Development tools by Tequilapps.com
+  meta(name='description', content='Development tools created by developers to help you in the hard process of build software.')
+
 block content
-  h1= title
+  .text-center
+    h1 DevTools
+    .lead Development tools created by developers to help you in the hard process of build software.
+    div
+      iframe.my-4(src='https://giphy.com/embed/Q7SKqn3G97xpmfSOvG' width='480' height='480' frameBorder='0')
+    a.btn.btn-primary(href='/planning-poker') Planning Poker

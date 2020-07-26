@@ -1,5 +1,9 @@
 extends ../layout.pug
 
+block pageInfo
+  title ♥️ Planning Poker SCRUM
+  meta(name='description', content='Planning Poker scrum is a virtual card game designed to help agile and scrum development teams')
+
 block content
   input#room-id(type='hidden', value=model.id)
   #app.row
