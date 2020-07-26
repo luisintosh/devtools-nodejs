@@ -6,14 +6,16 @@ block content
     .col-md-4.pr-2
       .card.h-100
         .card-body
-          h2.card-title Participants
+          h2.card-title Players
           ul#participant-list.list-group.list-group-flush
             li.list-group-item(v-for='(val, username) in model.players')
               .d-flex.align-items-center
                 img(width='32', v-bind:src='"https://api.adorable.io/avatars/32/" + username').rounded-circle.mr-3
                 .flex-grow-1 {{ username }}
-                i.text-muted.fa.fa-clock-o(v-if='"" === val')
-                i.text-muted.fa.fa-check(v-else)
+                i.text-muted.fa.fa-clock-o(v-if='"" === val && !model.finished')
+                i.text-muted.fa.fa-check(v-if='val && !model.finished')
+                span(v-if='val && model.finished') {{ val }}
+                i.text-muted.fa.fa-question(v-if='"" === val && model.finished')
     .col-md-4
       .card.h-100
         .card-body
