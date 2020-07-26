@@ -13,6 +13,7 @@ const app = new Vue({
       finished: false,
     },
     vote: '',
+    newPlayer: null,
   },
   computed: {
     votes: function () {
@@ -66,12 +67,16 @@ const app = new Vue({
     })
   },
   methods: {
+    getPlayerFromCookie: function () {
+      const match = document.cookie.match(/player=(\w+)/)
+      return match ? match[1] : null
+    },
     addNewPlayer: function () {
       fetch(`${baseUrl}/player`, {
         method: 'POST',
-        body: JSON.stringify({ username: this.newUsername }),
+        body: JSON.stringify({ username: this.newPlayer }),
         headers: { 'Content-Type': 'application/json' },
-      })
+      }).then(() => window.location.reload())
     },
     setVote: function ($event) {
       this.vote = $event.srcElement.value

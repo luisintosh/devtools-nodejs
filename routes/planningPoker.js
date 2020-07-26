@@ -45,6 +45,7 @@ router.post('/:id/player', async (req, res) => {
     poker.players.set(value.username, '')
     await poker.save()
     global.io.emit('planningPoker', poker.toJSON())
+    res.cookie('player', value.username)
     res.json({ data: 'done' })
   } catch (err) {
     console.error('Error: ', err)

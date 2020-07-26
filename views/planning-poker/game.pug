@@ -7,6 +7,14 @@ block content
       .card.h-100
         .card-body
           h2.card-title Players
+          form(v-on:submit.prevent='addNewPlayer()', v-if='!getPlayerFromCookie()')
+            .form-group.my-3
+              label(for='usernameField') Join the game
+              .input-group
+                input.form-control(type='text', minlength='3', maxlength='20', placeholder='Username', v-model='newPlayer')
+                .input-group-append
+                  button.btn.btn-primary Join
+              hr
           ul#participant-list.list-group.list-group-flush
             li.list-group-item(v-for='(val, username) in model.players')
               .d-flex.align-items-center
@@ -14,7 +22,7 @@ block content
                 .flex-grow-1 {{ username }}
                 i.text-muted.fa.fa-clock-o(v-if='"" === val && !model.finished')
                 i.text-muted.fa.fa-check(v-if='val && !model.finished')
-                span(v-if='val && model.finished') {{ val }}
+                strong(v-if='val && model.finished') {{ val }}
                 i.text-muted.fa.fa-question(v-if='"" === val && model.finished')
     .col-md-4
       .card.h-100
@@ -23,7 +31,7 @@ block content
           .row
             each card in model.cards
               .col-4.p-2
-                input.btn.btn-outline-primary.btn-lg.btn-block.rounded.py-5(type='button', value=card, v-on:click='setVote', v-bind:disabled='model.finished')
+                input.btn.btn-outline-primary.btn-lg.btn-block.rounded.py-5(type='button', value=card, v-on:click='setVote', v-bind:disabled='model.finished || !getPlayerFromCookie()')
 
     .col-md-4.pl-2
       .card.h-100
@@ -61,7 +69,7 @@ block content
                   td
                     strong {{ secondTopVote }}
                   td {{ secondTopVoteCount }}
-          div.text-right
+          div.text-right(v-if='getPlayerFromCookie()')
             button.btn.btn-primary(v-if='model.finished', v-on:click='toggleStatus') New round
             button.btn.btn-success(v-else, v-on:click='toggleStatus') See results
   script(src='/js/apps/planningPoker.js', defer)
