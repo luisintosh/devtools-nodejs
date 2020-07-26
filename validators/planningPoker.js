@@ -16,4 +16,8 @@ const newVoteSchema = Joi.object({
   vote: Joi.string().min(1).max(6),
 })
 
-module.exports = { newPokerSchema, newPlayerSchema, newVoteSchema }
+const newStatusSchema = Joi.object({
+  finished: Joi.boolean(),
+})
+
+module.exports = { newPokerSchema, newPlayerSchema, newVoteSchema, newStatusSchema }
