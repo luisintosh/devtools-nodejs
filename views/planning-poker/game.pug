@@ -9,8 +9,8 @@ block content
           h2.card-title Participants
           ul#participant-list.list-group.list-group-flush
             li.list-group-item(v-for='(val, username) in model.players')
-              .d-flex
-                img(width='32', src='https://api.adorable.io/avatars/32/{{username}}').rounded-circle.mr-3
+              .d-flex.align-items-center
+                img(width='32', v-bind:src='"https://api.adorable.io/avatars/32/" + username').rounded-circle.mr-3
                 .flex-grow-1 {{ username }}
                 i.text-muted.fa.fa-clock-o(v-if='"" === val')
                 i.text-muted.fa.fa-check(v-else)
