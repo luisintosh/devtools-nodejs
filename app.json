@@ -1,0 +1,8 @@
+{
+  "name": "DevTools Node.js",
+  "description": "Developer tools using Express 4 and Vuejs",
+  "repository": "https://github.com/luisintosh/devtools-nodejs",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}
