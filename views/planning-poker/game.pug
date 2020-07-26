@@ -6,74 +6,82 @@ block pageInfo
 
 block content
   input#room-id(type='hidden', value=model.id)
-  #app.row
-    .col-md-4.pr-2
-      .card.h-100
-        .card-body
-          h2.card-title Players
-          form(v-on:submit.prevent='addNewPlayer()', v-if='!getPlayerFromCookie()')
-            .form-group.my-3
-              label(for='usernameField') Join the game
-              .input-group
-                input.form-control(type='text', minlength='3', maxlength='20', placeholder='Username', v-model='newPlayer')
-                .input-group-append
-                  button.btn.btn-primary Join
-              hr
-          ul#participant-list.list-group.list-group-flush
-            li.list-group-item(v-for='(val, username) in model.players')
-              .d-flex.align-items-center
-                img(width='32', v-bind:src='"https://api.adorable.io/avatars/32/" + username').rounded-circle.mr-3
-                .flex-grow-1 {{ username }}
-                i.text-muted.fa.fa-clock-o(v-if='"" === val && !model.finished')
-                i.text-muted.fa.fa-check(v-if='val && !model.finished')
-                strong(v-if='val && model.finished') {{ val }}
-                i.text-muted.fa.fa-question(v-if='"" === val && model.finished')
-    .col-md-4
-      .card.h-100
-        .card-body
-          h2.card-title Cards
-          .row
-            each card in model.cards
-              .col-4.p-2
-                input.btn.btn-outline-primary.btn-lg.btn-block.rounded.py-5(type='button', value=card, v-on:click='setVote', v-bind:disabled='model.finished || !getPlayerFromCookie()')
+  #app
+    .d-flex.justify-content-center.align-items-center(v-if='loading')
+      div.spinner-border.text-primary
+    .row(v-else, v-bind:class='{ visible: !loading }', style='visibility: hidden')
+      .col-12.py-2
+        small.text-muted
+          span * Tip: Share 
+          a(v-bind:href='baseUrl') this link
+          span  with your colleagues
+      .col-md-4.pr-2
+        .card.h-100
+          .card-body
+            h2.card-title Players
+            form(v-on:submit.prevent='addNewPlayer()', v-if='!getPlayerFromCookie()')
+              .form-group.my-3
+                label(for='usernameField') Join the game
+                .input-group
+                  input.form-control(type='text', minlength='3', maxlength='20', placeholder='Username', v-model='newPlayer')
+                  .input-group-append
+                    button.btn.btn-primary Join
+                hr
+            ul#participant-list.list-group.list-group-flush
+              li.list-group-item(v-for='(val, username) in model.players')
+                .d-flex.align-items-center
+                  img(width='32', v-bind:src='"https://api.adorable.io/avatars/32/" + username').rounded-circle.mr-3
+                  .flex-grow-1 {{ username }}
+                  i.text-muted.fa.fa-clock-o(v-if='"" === val && !model.finished')
+                  i.text-muted.fa.fa-check(v-if='val && !model.finished')
+                  strong(v-if='val && model.finished') {{ val }}
+                  i.text-muted.fa.fa-question(v-if='"" === val && model.finished')
+      .col-md-4
+        .card.h-100
+          .card-body
+            h2.card-title Cards
+            .row
+              each card in model.cards
+                .col-4.p-2
+                  input.btn.btn-outline-primary.btn-lg.btn-block.rounded.py-5(type='button', value=card, v-on:click='setVote', v-bind:disabled='model.finished || !getPlayerFromCookie()')
 
-    .col-md-4.pl-2
-      .card.h-100
-        .card-body
-          .border-bottom.text-center.mb-3(v-if='!model.finished')
-            div
-              i.fa.fa-clock-o.fa-4x
-            p
-              div Your vote: {{ vote }}
-              div Waiting for other participants
-              div.text-muted {{ votes }} of {{ totalPlayers }}
-          .border-bottom.text-center.mb-3(v-else)
-            div
-              i.fa.fa-check.fa-4x
-            p
-              div Congratulations!
-              div Total of votes
-              div.text-muted {{ votes }} of {{ totalPlayers }}
-          .text-center.my-3(v-if='model.finished')
-            .display-4.mb-4 {{ topVote }}
-            table.table.table-bordered.table-hover.table-sm
-              thead
-                tr
-                  th Place
-                  th Vote
-                  th Count
-              tbody
-                tr
-                  td 1st place
-                  td
-                    strong {{ topVote }}
-                  td {{ topVoteCount }}
-                tr
-                  td 2nd place
-                  td
-                    strong {{ secondTopVote }}
-                  td {{ secondTopVoteCount }}
-          div.text-right(v-if='getPlayerFromCookie()')
-            button.btn.btn-primary(v-if='model.finished', v-on:click='toggleStatus') New round
-            button.btn.btn-success(v-else, v-on:click='toggleStatus') See results
+      .col-md-4.pl-2
+        .card.h-100
+          .card-body
+            .border-bottom.text-center.mb-3(v-if='!model.finished')
+              div
+                i.fa.fa-clock-o.fa-4x
+              p
+                div Your vote: {{ vote }}
+                div Waiting for other participants
+                div.text-muted {{ votes }} of {{ totalPlayers }}
+            .border-bottom.text-center.mb-3(v-else)
+              div
+                i.fa.fa-check.fa-4x
+              p
+                div Congratulations!
+                div Total of votes
+                div.text-muted {{ votes }} of {{ totalPlayers }}
+            .text-center.my-3(v-if='model.finished')
+              .display-4.mb-4 {{ topVote }}
+              table.table.table-bordered.table-hover.table-sm
+                thead
+                  tr
+                    th Place
+                    th Vote
+                    th Count
+                tbody
+                  tr
+                    td 1st place
+                    td
+                      strong {{ topVote }}
+                    td {{ topVoteCount }}
+                  tr
+                    td 2nd place
+                    td
+                      strong {{ secondTopVote }}
+                    td {{ secondTopVoteCount }}
+            div.text-right(v-if='getPlayerFromCookie()')
+              button.btn.btn-primary(v-if='model.finished', v-on:click='toggleStatus') New round
+              button.btn.btn-success(v-else, v-on:click='toggleStatus') See results
   script(src='/js/apps/planningPoker.js', defer)

@@ -1,5 +1,3 @@
-const baseUrl = window.location.origin + window.location.pathname
-
 // eslint-disable-next-line no-undef
 const socket = io()
 
@@ -7,6 +5,7 @@ const socket = io()
 const app = new Vue({
   el: '#app',
   data: {
+    loading: true,
     model: {
       cards: [],
       players: {},
@@ -16,6 +15,9 @@ const app = new Vue({
     newPlayer: null,
   },
   computed: {
+    baseUrl: function () {
+      return window.location.origin + window.location.pathname
+    },
     votes: function () {
       return Object.values(this.model.players).filter((val) => '' !== val).length
     },
@@ -63,7 +65,10 @@ const app = new Vue({
     socket.on('connect', () => {
       const roomId = document.getElementById('room-id').value
       socket.emit('planningPoker', roomId)
-      socket.on('planningPoker', (data) => (this.model = data))
+      socket.on('planningPoker', (data) => {
+        this.model = data
+        this.loading = false
+      })
     })
   },
   methods: {
@@ -72,7 +77,7 @@ const app = new Vue({
       return match ? match[1] : null
     },
     addNewPlayer: function () {
-      fetch(`${baseUrl}/player`, {
+      fetch(`${this.baseUrl}/player`, {
         method: 'POST',
         body: JSON.stringify({ username: this.newPlayer }),
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +85,7 @@ const app = new Vue({
     },
     setVote: function ($event) {
       this.vote = $event.srcElement.value
-      fetch(`${baseUrl}/vote`, {
+      fetch(`${this.baseUrl}/vote`, {
         method: 'POST',
         body: JSON.stringify({ vote: this.vote }),
         headers: { 'Content-Type': 'application/json' },
@@ -88,7 +93,7 @@ const app = new Vue({
     },
     toggleStatus: function () {
       const finished = !this.model.finished
-      fetch(`${baseUrl}/status`, {
+      fetch(`${this.baseUrl}/status`, {
         method: 'POST',
         body: JSON.stringify({ finished }),
         headers: { 'Content-Type': 'application/json' },

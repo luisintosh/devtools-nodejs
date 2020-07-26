@@ -40,6 +40,20 @@ block content
               small.form-text.text-muted
                 span Insert a list of values ​​for your cards separated by commas. i.e. 
                 i 0,1,2,3,5,8
+            .ideas
+              .lead Draw the best card set for your sprint planning
+              .input-group.input-group-sm.my-2
+                .input-group-prepend
+                  span.input-group-text Fibonacci:
+                input.form-control(readonly, value='0,0.5,1,2,3,5,8,13,20,40,100')
+              .input-group.input-group-sm.my-2
+                .input-group-prepend
+                  span.input-group-text Man Hours:
+                input.form-control(readonly, value='0.5,1,2,3,4,5,8,16,24,32')
+              .input-group.input-group-sm.my-2
+                .input-group-prepend
+                  span.input-group-text T-Shirt:
+                input.form-control(readonly, value='XS,S,M,L,XL,XXL')
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal') Close
             button.btn.btn-primary(type='submit') Create
