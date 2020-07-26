@@ -19,20 +19,28 @@ block content
     .col-md-4
       .card.h-100
         .card-body
+          h2.card-title Cards
           .row
             each card in model.cards
               .col-4.p-2
-                input.btn.btn-outline-primary.btn-lg.btn-block.py-5(type='button', value=card, v-on:click='setVote')
+                input.btn.btn-outline-primary.btn-lg.btn-block.rounded.py-5(type='button', value=card, v-on:click='setVote', v-bind:disabled='model.finished')
 
     .col-md-4.pl-2
       .card.h-100
         .card-body
-          .border-bottom.text-center.mb-3
+          .border-bottom.text-center.mb-3(v-if='!model.finished')
             div
               i.fa.fa-clock-o.fa-4x
             p
               div Your vote: {{ vote }}
               div Waiting for other participants
+              div.text-muted {{ votes }} of {{ totalPlayers }}
+          .border-bottom.text-center.mb-3(v-else)
+            div
+              i.fa.fa-check.fa-4x
+            p
+              div Congratulations!
+              div Total of votes
               div.text-muted {{ votes }} of {{ totalPlayers }}
           .text-center.my-3(v-if='model.finished')
             .display-4.mb-4 {{ topVote }}
