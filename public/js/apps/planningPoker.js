@@ -1,3 +1,5 @@
+const baseUrl = window.location.origin + window.location.pathname
+
 // eslint-disable-next-line no-undef
 const socket = io()
 
@@ -11,8 +13,6 @@ const app = new Vue({
       finished: false,
     },
     vote: '',
-    maxResponse: null,
-    minResponse: null,
   },
   computed: {
     votes: function () {
@@ -21,6 +21,42 @@ const app = new Vue({
     totalPlayers: function () {
       return Object.values(this.model.players).length
     },
+    countVotes: function () {
+      const count = {}
+      Object.values(this.model.players).forEach((vote) => {
+        if (vote) {
+          if (undefined === count[vote]) {
+            count[vote] = 0
+          }
+          ++count[vote]
+        }
+      })
+      return count
+    },
+    sortVotes: function () {
+      const count = this.countVotes
+      return Object.keys(count).sort((keyA, keyB) => {
+        if (count[keyA] > count[keyB]) {
+          return -1
+        } else if (count[keyA] < count[keyB]) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+    },
+    topVote: function () {
+      return this.sortVotes[0]
+    },
+    topVoteCount: function () {
+      return this.countVotes[this.topVote]
+    },
+    secondTopVote: function () {
+      return this.sortVotes[1]
+    },
+    secondTopVoteCount: function () {
+      return this.countVotes[this.secondTopVote]
+    },
   },
   created: function () {
     socket.on('connect', () => {
@@ -28,5 +64,30 @@ const app = new Vue({
       socket.emit('planningPoker', roomId)
       socket.on('planningPoker', (data) => (this.model = data))
     })
+  },
+  methods: {
+    addNewPlayer: function () {
+      fetch(`${baseUrl}/player`, {
+        method: 'POST',
+        body: JSON.stringify({ username: this.newUsername }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+    },
+    setVote: function ($event) {
+      this.vote = $event.srcElement.value
+      fetch(`${baseUrl}/vote`, {
+        method: 'POST',
+        body: JSON.stringify({ vote: this.vote }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+    },
+    toggleStatus: function () {
+      const finished = !this.model.finished
+      fetch(`${baseUrl}/status`, {
+        method: 'POST',
+        body: JSON.stringify({ finished }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+    },
   },
 })

@@ -78,6 +78,11 @@ router.post('/:id/status', async (req, res) => {
     const value = await newStatusSchema.validateAsync(req.body)
     const poker = await PlanningPokerModel.findById(roomId)
     poker.finished = value.finished
+    if (!poker.finished) {
+      for (let [key] of poker.players) {
+        poker.players.set(key, '')
+      }
+    }
     await poker.save()
     global.io.emit('planningPoker', poker.toJSON())
     res.json({ data: 'done' })

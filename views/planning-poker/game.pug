@@ -20,7 +20,7 @@ block content
           .row
             each card in model.cards
               .col-4.p-2
-                input.btn.btn-outline-primary.btn-lg.btn-block.py-5(type='button', value=card)
+                input.btn.btn-outline-primary.btn-lg.btn-block.py-5(type='button', value=card, v-on:click='setVote')
 
     .col-md-4.pl-2
       .card.h-100
@@ -33,16 +33,25 @@ block content
               div Waiting for other participants
               div.text-muted {{ votes }} of {{ totalPlayers }}
           .text-center.my-3(v-if='model.finished')
-            .display-4.mb-4 {{ maxResponse }}
+            .display-4.mb-4 {{ topVote }}
             table.table.table-bordered.table-hover.table-sm
+              thead
+                tr
+                  th Place
+                  th Vote
+                  th Count
               tbody
                 tr
-                  td Max
-                  td {{ maxResponse }}
+                  td 1st place
+                  td
+                    strong {{ topVote }}
+                  td {{ topVoteCount }}
                 tr
-                  td Min
-                  td {{ minResponse }}
+                  td 2nd place
+                  td
+                    strong {{ secondTopVote }}
+                  td {{ secondTopVoteCount }}
           div.text-right
-            button.btn.btn-primary(v-if='model.finished') New round
-            button.btn.btn-success(v-else) See results
+            button.btn.btn-primary(v-if='model.finished', v-on:click='toggleStatus') New round
+            button.btn.btn-success(v-else, v-on:click='toggleStatus') See results
   script(src='/js/apps/planningPoker.js', defer)
