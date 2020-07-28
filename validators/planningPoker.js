@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi')
 const newPokerSchema = Joi.object({
   cards: Joi.string()
     .trim()
-    .regex(/^(\w{1,6})(,\w{1,6})*$/),
+    .regex(/^([a-zA-Z0-9._\-+]{1,6})(,[a-zA-Z0-9._\-+]{1,6})*$/),
   username: Joi.string().min(3).max(20),
 })
 
